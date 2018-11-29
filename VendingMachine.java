@@ -6,8 +6,8 @@ public class VendingMachine
 {  
    private ArrayList<LineItem> stock;
    private ArrayList<Operator> operators;
-   public CoinSet coins;
-   public CoinSet currentCoins;
+   public ArrayList<CoinLineItem> coins;
+   public ArrayList<CoinLineItem> currentCoins;
 
    /**
       Constructs a VendingMachine object.
@@ -15,8 +15,8 @@ public class VendingMachine
    public VendingMachine()
    { 
       stock = new ArrayList<LineItem>();
-      coins = new CoinSet();
-      currentCoins = new CoinSet();
+      coins = new ArrayList<CoinLineItem> ();
+      currentCoins = new ArrayList<CoinLineItem> ();
 	  operators = new ArrayList<Operator>();
 	  operators.add(new Operator("001", "abc")); operators.add(new Operator("002", "cba"));
    }
@@ -42,8 +42,26 @@ public class VendingMachine
    
    public void addCoin(Coin money)
    {
-	   currentCoins.add(money);
-	   System.out.println("Total Credit:  $" + String.format("%1.2f", currentCoins.total()) + "\n");
+	   boolean addNew = true;
+	   for(int i = 0; i < currentCoins.size(); i++)
+	   {
+		   if(currentCoins.get(i).getCoin().compareTo(money) == 0)
+		   {
+			   currentCoins.get(i).add();
+			   addNew = false;
+			   i = currentCoins.size();
+		   }
+	   }
+	   if(addNew)
+	   {
+			currentCoins.add(new CoinLineItem(money, 1));
+	   }
+	   double sum = 0;
+		for(int i = 0; i < currentCoins.size(); i++)
+		{
+			sum += currentCoins.get(i).total();
+		}
+	   System.out.println("Total Credit:  $" + String.format("%1.2f", sum) + "\n");
    }
    
    public String removeMoney(boolean isOperator)
@@ -53,8 +71,15 @@ public class VendingMachine
 		   String ret = "Machine Empty: No Coins to Collect";
 		   if(!(coins.isEmpty()))
 		   {
-				ret = String.format("$%1.2f", coins.total()) + ": All Coins Collected";
-				coins.empty();
+			   double sum= 0;
+				for(int j = 0; j < coins.size(); j++)
+				{
+					sum += coins.get(j).total(); coins.get(j).empty();
+				}
+				if(sum > 0)
+				{					
+					ret = String.format("$%1.2f", sum) + ": All Coins Collected";
+				}
 		   }
 		   return ret;
 	   }
@@ -63,32 +88,62 @@ public class VendingMachine
 		   String ret = "No Coins Inserted";
 		   if(!(currentCoins.isEmpty()))
 		   {
-				ret = String.format("$%1.2f", currentCoins.total()) + " Returned";
-				currentCoins.empty();
-		   }
-		   return ret;
+			   double sum = 0;
+			   for(int i = 0; i < currentCoins.size(); i++)
+			   {
+				   sum += currentCoins.get(i).total(); currentCoins.get(i).empty();
+			   }
+				if(sum > 0)
+				{
+					ret = String.format("$%1.2f", sum) + " Returned";
+				}
+				return ret;
+			}
+			return ret;
 	   }
+   }
+   
+   public void transferCoins()
+   {
+		for(int i = 0; i < currentCoins.size(); i++)
+		{
+			boolean addNew = true;
+			for(int j = 0; j < coins.size(); j++)
+			{
+				if(currentCoins.get(i).getCoin().compareTo(coins.get(j).getCoin()) == 0);
+				{
+					coins.get(j).add(currentCoins.get(i).getQuantity());
+					currentCoins.get(i).empty();
+					addNew = false; j = coins.size();
+				}
+			}
+			if(addNew)
+			{
+				coins.add(new CoinLineItem(currentCoins.get(i).getCoin(), currentCoins.get(i).getQuantity()));
+				currentCoins.get(i).empty();
+			}
+		}
    }
    
 	public void buyProduct(Product prod) throws VendingException
 	{
-		if(prod.getPrice() <= currentCoins.total())
+		double sum = 0;
+		for(int i = 0; i < currentCoins.size(); i++)
 		{
-			for(int j = 0; j < currentCoins.size(); j++)
+			sum += currentCoins.get(i).total();
+		}
+		if(prod.getPrice() <= sum)
+		{
+			for(int j = 0; j < stock.size(); j++)
 			{
 				if((stock.get(j).getProd().compareTo(prod)) == 0)
 				{
 					stock.get(j).remove();
-					j = currentCoins.size();
+					j = stock.size();
 				}
 			}
 			
-			for(int i = 0; i < currentCoins.size(); i++)
-			{
-				coins.add(currentCoins.get(i));
-			}
-			
-			currentCoins.empty();
+			transferCoins();
 		}
 		else
 		{

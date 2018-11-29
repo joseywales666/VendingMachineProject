@@ -16,7 +16,7 @@ public class VendingMachineMenu
 	{
 		in = new Scanner(System.in);
 		opMenu = new OperatorMenu();
-		coins = new Coin[]{new Coin(0.50, "Fiddy"), new Coin(1.0, "Dolla")};
+		coins = currencyReader("Money.txt");
 	}
    
 	/**

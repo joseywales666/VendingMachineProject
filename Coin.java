@@ -1,7 +1,7 @@
 /**
    A coin with a monetary value.
 */
-public class Coin
+public class Coin implements Comparable<Coin>
 {
    private double value;
    private String name;
@@ -25,6 +25,22 @@ public class Coin
    public String getName()
    {
 	   return name;
+   }
+   
+   public int compareTo(Coin c)
+   {
+	   if(c.getValue() == this.getValue())
+	   {
+		   return name.compareTo(c.getName());
+	   }
+	   else if(c.getValue() < this.getValue())
+	   {
+		   return 1;
+	   }
+	   else
+	   {
+		   return -1;
+	   }
    }
    
    public String toString()
