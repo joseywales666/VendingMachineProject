@@ -83,6 +83,6 @@ public class LineItem
 	
 	public String toString()
 	{
-		return (p + "| Quantity: " + quantity);
+		return (p + "," + quantity);
 	}
 }

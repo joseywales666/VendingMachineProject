@@ -61,6 +61,6 @@ public class Product implements Comparable<Product>
 	
 	public String toString()
 	{
-		return description + "(" + String.format("$%1.2f", price) + ")";
+		return description + "," + price;
 	}
 }
