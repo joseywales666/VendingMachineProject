@@ -1,7 +1,7 @@
 /**
    A product in a vending machine.
 */
-public class Product implements Comparable<Product>
+public class Product implements Comparable<Product>, Writable
 {  
 	private String description;
 	private double price;
@@ -59,8 +59,13 @@ public class Product implements Comparable<Product>
 		return description;
 	}
 	
+	public String toCSV()
+	{
+		return (description + "," + price);
+	}
+	
 	public String toString()
 	{
-		return description + "," + price;
+		return description + "(" + String.format("$%1.2f", price) + ")";
 	}
 }

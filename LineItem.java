@@ -1,4 +1,4 @@
-public class LineItem
+public class LineItem implements Writable
 {
 	private Product p;
 	private int quantity;
@@ -81,8 +81,13 @@ public class LineItem
 			return this.p.compareTo(price, desc);
 	}
 	
+	public String toCSV()
+	{
+		return (p.toCSV() + "," + quantity);
+	}
+	
 	public String toString()
 	{
-		return (p + "," + quantity);
+		return (p + "| Quantity: " + quantity);
 	}
 }

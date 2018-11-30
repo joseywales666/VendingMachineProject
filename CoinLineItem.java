@@ -1,4 +1,4 @@
-public class CoinLineItem
+public class CoinLineItem implements Writable
 {  
 	private Coin c;
 	private int quantity;
@@ -23,7 +23,8 @@ public class CoinLineItem
 	
 	public void add(int x)
 	{
-		quantity += x;
+		if(x > 0)
+			quantity += x;
 	}
    
 	public void remove()
@@ -61,8 +62,13 @@ public class CoinLineItem
 		return c;
 	}
 	
-	 public String toString()
-   {
-	   return c.getName() + ","  + c.getValue() + "," + quantity;
-   }
+	public String toCSV()
+	{
+		return (c.toCSV() + "," + quantity);
+	}
+	
+	public String toString()
+	{
+		return c + " | Quantity: " + quantity;
+	}
 }

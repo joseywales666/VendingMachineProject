@@ -4,19 +4,18 @@ import java.io.IOException;
 /**   
 A menu from the vending machine.
 */
-public class VendingMachineMenu
+public class VendingMachineMenu extends Menu
 {    
-	private Scanner in;
 	private static Coin[] coins;
 	private OperatorMenu opMenu;
 	/**
     Constructs a VendingMachineMenu object
 	*/
-	public VendingMachineMenu()
+	public VendingMachineMenu() throws IOException
 	{
-		in = new Scanner(System.in);
+		super();
 		opMenu = new OperatorMenu();
-		coins = currencyReader("Money.txt");
+		coins = Reader.currencyReader("Money.txt");
 	}
    
 	/**
@@ -107,42 +106,12 @@ public class VendingMachineMenu
 			}
 			else if (command.equals("Q"))
 			{ 
+				System.out.println("\nReturning Unused Coins");
+				System.out.println(machine.removeMoney(false));
+				Writer.stockToFile("Stock.txt", machine.getStock());
+				Writer.coinsToFile("Money.txt", machine.getCoins());
 				more = false;
 			}
 		}
 	}
-
-	private Object getChoice(Object[] choices) throws NullPointerException
-	{ 
-		while (true)
-		{
-			char c = 'A';
-			for (Object choice : choices)
-			{
-				System.out.println(c + ") " + choice); 
-				c++;
-			}
-			try
-			{
-				String input = in.nextLine();
-				int n = input.toUpperCase().charAt(0) - 'A';
-				if (0 <= n && n < choices.length)
-				return choices[n];
-			}
-			catch(StringIndexOutOfBoundsException ex)
-			{
-				System.out.println("Please Select An Option");
-			}
-		}   
-	}
 }
-
-/*System.out.println("Description:");
-            String description = in.nextLine();
-            System.out.println("Price:");
-            double price = in.nextDouble();
-            System.out.println("Quantity:");
-            int quantity = in.nextInt();
-            in.nextLine(); // read the new-line character
-            machine.addProduct(new Product(description, price), quantity);
-*/

@@ -13,9 +13,4 @@ public class Operator
 	{
 		return(id.compareTo(idx) == 0 && pWord.compareTo(pass) == 0);
 	}
-	
-	public String toString()
-	{
-		return "PROTECTED INFO";
-	}
 }

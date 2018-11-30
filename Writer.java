@@ -1,20 +1,29 @@
 import java.util.*;
 import java.io.*;
-public class Writer extend FileManipulator
-{
-	Private FileWriter aFileWriter; 
+
+public class Writer
+{ 
 	public Writer()
 	{
 		super();
 	}
-	public static void fileObjectWriter(String fileName, ArrayList<Object> writer) throws IOException 
+	public static void stockToFile(String fileName, ArrayList<LineItem> list) throws IOException 
 	{
-		 		
-		aFileWriter = new FileWriter(fileName);
-		for (Object str : writer) 
+		FileWriter writer = new FileWriter(fileName);
+		for (LineItem str : list) 
 		{
-			aFileWriter.write(str.toString());
+			writer.write(str.toCSV() + "\n");
 		}
-		aFileWriter.close();
+		writer.close();
+	}	
+	
+	public static void coinsToFile(String fileName, ArrayList<CoinLineItem> list) throws IOException 
+	{
+		FileWriter writer = new FileWriter(fileName);
+		for (CoinLineItem str : list) 
+		{
+			writer.write(str.toCSV() + "\n");
+		}
+		writer.close();
 	}	
 }

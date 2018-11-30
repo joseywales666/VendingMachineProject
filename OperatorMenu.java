@@ -1,13 +1,11 @@
 import java.util.Scanner;
 import java.io.IOException;
 
-public class OperatorMenu
+public class OperatorMenu extends Menu
 {
-	private Scanner in;
-	
 	public OperatorMenu()
 	{
-		in = new Scanner(System.in);
+		super();
 	}
 	
 	public void run(VendingMachine machine) throws IOException
@@ -31,7 +29,7 @@ public class OperatorMenu
 						Product p = (Product) getChoice(machine.getProductTypes(true));
 						System.out.println("Quantity:");
 						String command = in.nextLine();
-						if(verifyInt(command))
+						if(Validator.verifyInt(command))
 						{
 							int q = Integer.parseInt(command);
 							if(!(q > 0))
@@ -67,9 +65,9 @@ public class OperatorMenu
 				String priceStr = in.nextLine();
 				System.out.println("Quantity:");
 				String quantityStr = in.nextLine();
-				if(verifyDouble(priceStr) && verifyInt(quantityStr))
+				if(Validator.verifyDouble(priceStr) && Validator.verifyInt(quantityStr))
 				{
-					double price =  Double.parseDouble(priceStr); int quantity = Integer.parseInt(quantityStr);
+					double price = Double.parseDouble(priceStr); int quantity = Integer.parseInt(quantityStr);
 					if(price > 0 && quantity > 0)
 					{
 						if(!(machine.containsProduct(price, description)))
@@ -92,41 +90,5 @@ public class OperatorMenu
 				more = false;
 			}        
 		}
-	}
-	
-	public static boolean verifyInt(String v)
-	{
-		String intPattern = "(-)?[0-9]+";
-		return (v.matches(intPattern));
-	}
-	
-	public static boolean verifyDouble(String d)
-	{
-		String dubPattern = "(-)?([0-9]*\\.)?[0-9]+";
-		return (d.matches(dubPattern));
-	}
-	
-	private Object getChoice(Object[] choices) throws NullPointerException
-	{ 
-		while (true)
-		{
-			char c = 'A';
-			for (Object choice : choices)
-			{
-				System.out.println(c + ") " + choice); 
-				c++;
-			}
-			try
-			{
-				String input = in.nextLine();
-				int n = input.toUpperCase().charAt(0) - 'A';
-				if (0 <= n && n < choices.length)
-				return choices[n];
-			}
-			catch(StringIndexOutOfBoundsException ex)
-			{
-				System.out.println("Please Select An Option");
-			}
-		}   
 	}
 }

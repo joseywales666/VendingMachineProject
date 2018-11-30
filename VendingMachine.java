@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.io.*;
+
 /**
    A vending machine.
 */
@@ -12,18 +14,16 @@ public class VendingMachine
    /**
       Constructs a VendingMachine object.
    */
-   public VendingMachine()
+   public VendingMachine() throws IOException
    { 
-      stock = new ArrayList<LineItem>();
-      coins = new ArrayList<CoinLineItem> ();
-      currentCoins = new ArrayList<CoinLineItem> ();
-	  operators = new ArrayList<Operator>();
-	  operators.add(new Operator("001", "abc")); operators.add(new Operator("002", "cba"));
+		stock = Reader.stockReader("Stock.txt");
+		coins = Reader.coinReader("Money.txt");
+		currentCoins = new ArrayList<CoinLineItem>();
+		operators = Reader.operatorReader("Operators.txt");
    }
    
    public Product[] getProductTypes(boolean isOperator)
    {
-
 	   ArrayList<Product> temp = new ArrayList<Product>();
 	  
 		for(int i = 0; i < this.stock.size(); i++)
@@ -110,7 +110,7 @@ public class VendingMachine
 			boolean addNew = true;
 			for(int j = 0; j < coins.size(); j++)
 			{
-				if(currentCoins.get(i).getCoin().compareTo(coins.get(j).getCoin()) == 0);
+				if(currentCoins.get(i).getCoin().compareTo(coins.get(j).getCoin()) == 0)
 				{
 					coins.get(j).add(currentCoins.get(i).getQuantity());
 					currentCoins.get(i).empty();
@@ -205,5 +205,20 @@ public class VendingMachine
 			}
 		}
 		return false;
+   }
+   
+   public ArrayList<LineItem> getStock()
+   {
+	   return stock;
+   }
+   
+   public ArrayList<Operator> getOperators()
+   {
+	   return operators;
+   }
+   
+   public ArrayList<CoinLineItem> getCoins()
+   {
+	   return coins;
    }
 }
