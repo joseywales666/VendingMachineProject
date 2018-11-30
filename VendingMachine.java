@@ -6,8 +6,8 @@ public class VendingMachine
 {  
    private ArrayList<LineItem> stock;
    private ArrayList<Operator> operators;
-   public ArrayList<CoinLineItem> coins;
-   public ArrayList<CoinLineItem> currentCoins;
+   private ArrayList<CoinLineItem> coins;
+   private ArrayList<CoinLineItem> currentCoins;
 
    /**
       Constructs a VendingMachine object.
