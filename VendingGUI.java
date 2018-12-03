@@ -56,8 +56,8 @@ public class VendingGUI extends Application {
 		gPane.add(rbOpFuntions,1,1);
 		gPane.add(rbQuit,1,2);
 	
-		ToggleGroup group = new ToggleGroup();
-		rbShowProducts.setToggleGroup(group);
+		ToggleGroup group = new ToggleGroup(); //This group ensures the radio buttons stay pushed
+		rbShowProducts.setToggleGroup(group);  //untill the next scene is launched.
 		rbInsertCoins.setToggleGroup(group);
 		rbBuy.setToggleGroup(group);
 		rbReturnCoins.setToggleGroup(group);
@@ -71,7 +71,7 @@ public class VendingGUI extends Application {
 				primaryStage.setTitle("Show Products");
 				primaryStage.setScene(showProductsScene);
 				primaryStage.show();
-				rbShowProducts.setSelected(false);
+				rbShowProducts.setSelected(false); //This unchecks the radio button once the next scene is shown.
 			}
 		});
 		//Insert Coins menu button
@@ -121,7 +121,7 @@ public class VendingGUI extends Application {
 				primaryStage.setTitle("Ad\u00ED"+"os CowBoy!");
 				primaryStage.setScene(quitScene);
 				primaryStage.show();
-				writeFiles();
+				writeFiles(); // this writes all our files before quitting the application.
 			}
 		});
 		return gPane;
@@ -140,25 +140,25 @@ public class VendingGUI extends Application {
 		pane.setBottom(buttonPane);
 		products = machine.getProductTypes(false); // loads the products array with the current stock.
 		
-		if(products.length>0){// if there are no products.
+		if(products.length>0) { // if there are no products.
 			String[] productInfo = new String[products.length]; // next few lines fill productInfo for ComboBox
 			for(int i=0; i<products.length; i++)
 				productInfo[i] = "Product: " + products[i].getDescription() + 
 								 ", Price: $" + String.format("%1.2f", products[i].getPrice());
 
 			ObservableList<String> items = FXCollections.observableArrayList(productInfo);
-			ComboBox<String> cbo 		 = new ComboBox<>(); // Create a ComboBox for listing products.
+			ComboBox<String> cbo 		 = new ComboBox<>();
 			TextArea textArea 			 = new TextArea();
 			textArea.setPrefWidth(320);
 			textArea.setPrefHeight(125);
-			textArea.setEditable(false);
+			textArea.setEditable(false); // this and the following two lines prevent users editing textArea
 			textArea.setMouseTransparent(true);
 			textArea.setFocusTraversable(false);
 			BorderPane paneForComboBox 	 = new BorderPane();
 			paneForComboBox.setLeft(new Label("Select Product to Buy: "));
 			paneForComboBox.setRight(cbo);
 			pane.setTop(paneForComboBox);
-			cbo.setValue("Product...");
+			cbo.setValue("Product..."); // default display value for comboBox
 			cbo.setPrefWidth(200);
 			cbo.getItems().addAll(items); 
 			pane.setCenter(textArea);
@@ -181,7 +181,7 @@ public class VendingGUI extends Application {
 			Label message = new Label("No products in stock.");
 			pane.setCenter(message);
 		}
-		btClose.setOnAction(e->primaryStage.hide());
+		btClose.setOnAction(e->primaryStage.hide()); // close current stage
 		return pane;	
 	}
 ////////////////////////////////////////////////////////////////////////////////////
@@ -588,7 +588,7 @@ public class VendingGUI extends Application {
 	public GridPane getQuitPane(){
 		GridPane pane 	= new GridPane();
 		Button btQuit 	= new Button("Quit");
-		Label l1 		= new Label("Returning Unused Coins\n" + machine.removeMoney(false) + "\n" +
+		Label l1 		= new Label("Returning Unused Coins:\n" + machine.removeMoney(false) + "\n" +
 									"Writing files to memory...\n");
 		pane.add(l1,0,0);
 		pane.setPrefWidth(320);
@@ -614,7 +614,5 @@ public class VendingGUI extends Application {
 	
 	}
 ////////////////////////////////////////////////////////////////////////////////////
-	
-
-	
+		
 }
