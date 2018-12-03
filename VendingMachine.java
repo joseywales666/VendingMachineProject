@@ -40,8 +40,12 @@ public class VendingMachine
 	   return ret;
    }
    
-   public void addCoin(Coin money)
+   public String addCoin(Coin money)
    {
+       String output = ""; //I added this guy to this method to collect our output 
+							//and return it, it helps with the GUI, i also changed
+							//the statement where this is called from VendingMenu to
+							//a println statement so that the needed info is still printed!
 	   boolean addNew = true;
 	   for(int i = 0; i < currentCoins.size(); i++)
 	   {
@@ -61,7 +65,9 @@ public class VendingMachine
 		{
 			sum += currentCoins.get(i).total();
 		}
-	   System.out.println("Total Credit:  $" + String.format("%1.2f", sum) + "\n");
+	   output=("Total Credit:  $" + String.format("%1.2f", sum) + "\n");
+	   
+	   return output;
    }
    
    public String removeMoney(boolean isOperator)
@@ -125,8 +131,12 @@ public class VendingMachine
 		}
    }
    
-	public void buyProduct(Product prod) throws VendingException
-	{
+   public String buyProduct(Product prod) throws VendingException
+   {
+		String output = ""; //I added this guy to this method to collect our output 
+							//and return it, it helps with the GUI, i also changed
+							//the statement where this is called from VendingMenu to
+							//a println statement so that the needed info is still printed!
 		double sum = 0;
 		for(int i = 0; i < currentCoins.size(); i++)
 		{
@@ -142,28 +152,34 @@ public class VendingMachine
 					j = stock.size();
 				}
 			}
-			
+			output = "Purchased: " + prod.getDescription() + ".";
 			transferCoins();
 		}
 		else
 		{
-			String str = this.removeMoney(false);
-			System.out.println(str);
-			throw new VendingException("Not enough money\n");
+			//output = this.removeMoney(false);
+			//I changed this, it wasnt printing the removeMoney message.////////////////////////
+			throw new VendingException("Not enough money\n" + this.removeMoney(false));
 		}
+		return output;
 	}
    
-   public void addProduct(Product prod, int quant)
-   {
+   public String addProduct(Product prod, int quant)
+   {   
+	   String output = ""; //I added this guy to this method to collect our output 
+							//and return it, it helps with the GUI, i also changed
+							//the statement where this is called from OperatorMenu to
+							//a println statement so that the needed info is still printed!
+	   
 	   boolean go = true; int i = 0;
 	   while(go && i < stock.size())
 	   {
 		   if(stock.get(i).compareProducts(prod) == 0)
 		   {
 			   if(stock.get(i).add(quant))
-				   System.out.println("Successfully added"); 
+				   output = "Successfully added"; 
 			   else
-					System.out.println("Add Unsuccessful"); 
+					output = "Add Unsuccessful"; 
 			   go = false;
 		   }
 		   i++;
@@ -171,8 +187,9 @@ public class VendingMachine
 	   if(go)
 	   {   
 			stock.add(new LineItem(prod, quant)); 
-			System.out.println("Successfully added"); 
+			output = "Successfully added"; 
 	   }
+	   return output;
    }
    
    public boolean containsProduct(Product p)

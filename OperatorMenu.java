@@ -38,7 +38,7 @@ public class OperatorMenu extends Menu
 							}
 							else
 							{
-								machine.addProduct(p, q);
+								System.out.println(machine.addProduct(p, q));
 								System.out.println(p + " : " + q + " Added");
 							}
 						}
@@ -71,18 +71,18 @@ public class OperatorMenu extends Menu
 					if(price > 0 && quantity > 0)
 					{
 						if(!(machine.containsProduct(price, description)))
-						machine.addProduct(new Product(description, price), quantity);
+						System.out.println(machine.addProduct(new Product(description, price), quantity));
 						else
 						System.out.println("Product Already In Vending Machine.\nPlease Select \"R)estock\" Option"); 
 					}
 					else
 					{
-						System.out.println("Invaldid Input");
+						System.out.println("Invalid Input");
 					}
 				}
 				else
 				{
-					System.out.println("Invaldid Input");
+					System.out.println("Invalid Input");
 				}
 			}        
 			else if (option.equals("E"))
@@ -92,3 +92,5 @@ public class OperatorMenu extends Menu
 		}
 	}
 }
+
+	
