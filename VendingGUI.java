@@ -141,7 +141,7 @@ public class VendingGUI extends Application {
 		if(products.length>0){
 			String[] productInfo = new String[products.length];
 			for(int i=0; i<products.length; i++)
-					productInfo[i] = "Product: " + products[i].getDescription() + ", Price: $" + products[i].getPrice();
+					productInfo[i] = "Product: " + products[i].getDescription() + ", Price: $" + String.format("%1.2f", products[i].getPrice());
 					
 			String[] productDescriptions = new String[products.length];	
 			for(int i=0; i<products.length; i++)
