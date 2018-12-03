@@ -1,6 +1,6 @@
 import java.util.Scanner;
 import java.io.IOException;
-
+import java.io.Console;
 /**   
 A menu from the vending machine.
 */
@@ -86,8 +86,12 @@ public class VendingMachineMenu extends Menu
 			}
 			else if (command.equals("O"))
 			{  		
+				Console con = System.console(); String pass = "";
 				System.out.println("Enter Operator ID:"); String id = in.nextLine();
-				System.out.println("Enter Password:"); String pass = in.nextLine();
+				System.out.println("Enter Password:"); char[] passArray = con.readPassword();
+				for(char c : passArray)
+					pass += c;
+				
 				try
 				{
 					if(machine.login(id, pass))
