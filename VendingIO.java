@@ -1,5 +1,5 @@
 import java.lang.Object;
-import java.util.Scanner;
+import java.util.*;
 import java.io.*;
 
 		

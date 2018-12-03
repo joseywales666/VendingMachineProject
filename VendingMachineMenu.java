@@ -49,7 +49,7 @@ public class VendingMachineMenu extends Menu
 			{ 
 				try
 				{	
-					machine.addCoin((Coin) getChoice(coins));
+					System.out.println(machine.addCoin((Coin) getChoice(coins)));
 				}
 				catch(NullPointerException ex)
 				{
