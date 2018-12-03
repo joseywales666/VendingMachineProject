@@ -154,6 +154,7 @@ public class VendingGUI extends Application {
 			textArea.setEditable(false); // this and the following two lines prevent users editing textArea
 			textArea.setMouseTransparent(true);
 			textArea.setFocusTraversable(false);
+			textArea.setText(machine.getCurrentCredit());
 			BorderPane paneForComboBox 	 = new BorderPane();
 			paneForComboBox.setLeft(new Label("Select Product to Buy: "));
 			paneForComboBox.setRight(cbo);
@@ -163,11 +164,13 @@ public class VendingGUI extends Application {
 			cbo.getItems().addAll(items); 
 			pane.setCenter(textArea);
 			
-			cbo.setOnMouseClicked(e -> textArea.clear());
+			cbo.setOnMouseClicked(e -> textArea.setText(machine.getCurrentCredit()));
 			btPurchase.setOnAction(e -> {
 				int indx = items.indexOf(cbo.getValue());
 				try{
-					textArea.setText(machine.buyProduct(products[indx]));
+					textArea.setText(machine.buyProduct(products[indx]) + 
+									 "\n" + machine.getCurrentCredit() +
+									 "\n\n" + "This machine does not give change.");
 				}
 				catch(NullPointerException except) {
 					textArea.setText("No Options Currently Available");
