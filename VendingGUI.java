@@ -122,7 +122,6 @@ public class VendingGUI extends Application {
 				primaryStage.setScene(quitScene);
 				primaryStage.show();
 				writeFiles();
-				
 			}
 		});
 		return gPane;
@@ -130,28 +129,28 @@ public class VendingGUI extends Application {
 ////////////////////////////////////////////////////////////////////////////////////
 
 	public BorderPane getBuyPane(){
-		BorderPane pane = new BorderPane();
-		Button btClose 	= new Button("Back");
+		BorderPane pane 	= new BorderPane();
+		GridPane buttonPane = new GridPane();
+		Button btPurchase 	= new Button("Purchase");
+		Button btClose	 	= new Button("Back");
 		pane.setPrefHeight(175);
 		pane.setPrefWidth(320);
-		pane.setBottom(btClose);
-		
+		buttonPane.add(btPurchase, 3, 0);
+		buttonPane.add(btClose, 0, 0);
+		pane.setBottom(buttonPane);
 		products = machine.getProductTypes(false); // loads the products array with the current stock.
 		
-		if(products.length>0){
-			String[] productInfo = new String[products.length];
+		if(products.length>0){// if there are no products.
+			String[] productInfo = new String[products.length]; // next few lines fill productInfo for ComboBox
 			for(int i=0; i<products.length; i++)
-					productInfo[i] = "Product: " + products[i].getDescription() + ", Price: $" + String.format("%1.2f", products[i].getPrice());
-					
-			String[] productDescriptions = new String[products.length];	
-			for(int i=0; i<products.length; i++)
-					productDescriptions[i] = products[i].toString();
-			
+				productInfo[i] = "Product: " + products[i].getDescription() + 
+								 ", Price: $" + String.format("%1.2f", products[i].getPrice());
+
 			ObservableList<String> items = FXCollections.observableArrayList(productInfo);
-			ComboBox<String> cbo 		 = new ComboBox<>();
+			ComboBox<String> cbo 		 = new ComboBox<>(); // Create a ComboBox for listing products.
 			TextArea textArea 			 = new TextArea();
-			textArea.setPrefHeight(125);
 			textArea.setPrefWidth(320);
+			textArea.setPrefHeight(125);
 			textArea.setEditable(false);
 			textArea.setMouseTransparent(true);
 			textArea.setFocusTraversable(false);
@@ -159,14 +158,13 @@ public class VendingGUI extends Application {
 			paneForComboBox.setLeft(new Label("Select Product to Buy: "));
 			paneForComboBox.setRight(cbo);
 			pane.setTop(paneForComboBox);
-			cbo.setPrefWidth(200);
 			cbo.setValue("Product...");
-			
+			cbo.setPrefWidth(200);
 			cbo.getItems().addAll(items); 
 			pane.setCenter(textArea);
 			
-			//Display the selected product
-			cbo.setOnAction(e -> {
+			cbo.setOnMouseClicked(e -> textArea.clear());
+			btPurchase.setOnAction(e -> {
 				int indx = items.indexOf(cbo.getValue());
 				try{
 					textArea.setText(machine.buyProduct(products[indx]));
@@ -177,6 +175,7 @@ public class VendingGUI extends Application {
 				catch (VendingException ex) {
 					textArea.setText(ex.getMessage());
 				}
+				cbo.setValue("Product...");
 			});
 		}else{
 			Label message = new Label("No products in stock.");
@@ -184,7 +183,6 @@ public class VendingGUI extends Application {
 		}
 		btClose.setOnAction(e->primaryStage.hide());
 		return pane;	
-		
 	}
 ////////////////////////////////////////////////////////////////////////////////////
 	
@@ -278,7 +276,6 @@ public class VendingGUI extends Application {
 				int indx = items.indexOf(cbo.getValue());
 				if(indx>=0){
 					try{	
-						
 						textArea.setText("Added: " + coinNames[indx] + "\n" + machine.addCoin(coins[indx]));
 					}
 					catch(NullPointerException ex) {
@@ -418,6 +415,7 @@ public class VendingGUI extends Application {
 				secondaryStage.setTitle("Operator Coin Withdrawl");
 				secondaryStage.setScene(returnCoinsScene);
 				secondaryStage.show();
+				rbWithdrawCoins.setSelected(false);
 			}
 		});
 		
@@ -427,6 +425,7 @@ public class VendingGUI extends Application {
 				secondaryStage.setTitle("Restock");
 				secondaryStage.setScene(restockScene);
 				secondaryStage.show();
+				rbRestock.setSelected(false);
 			}
 		});
 
@@ -436,6 +435,7 @@ public class VendingGUI extends Application {
 				secondaryStage.setTitle("Add Stock");
 				secondaryStage.setScene(scene);
 				secondaryStage.show();
+				rbAddProduct.setSelected(false);
 			}
 		});
 		
